@@ -1041,47 +1041,54 @@
     return { headers, rows };
   }
 
-  function buildPopupContent(row, datasetKey) {
-    const dataset = datasets[datasetKey];
-    const mapCols = dataset.mapColumns;
+function buildPopupContent(row, datasetKey) {
+  const dataset = datasets[datasetKey];
+  const mapCols = dataset.mapColumns;
 
-    const location = formatPopupValue(row[mapCols.location]);
-    const country = formatPopupValue(row[mapCols.country]);
-    const study = formatPopupValue(row[mapCols.study]);
-    const start = formatPopupValue(row[mapCols.start]);
-    const finish = formatPopupValue(row[mapCols.finish]);
-    const type = formatPopupValue(row[mapCols.type]);
+  const location = formatPopupValue(row[mapCols.location]);
+  const study = formatPopupValue(row[mapCols.study]);
+  const country = formatPopupValue(row[mapCols.country]);
+  const start = formatPopupValue(row[mapCols.start]);
+  const finish = formatPopupValue(row[mapCols.finish]);
+  const type = formatPopupValue(row[mapCols.type]);
 
-    const possibleLinkColumns = ["Link", "link", "URL", "Url", "Study Link"];
-    let link = "";
+  const possibleLinkColumns = ["Link", "link", "URL", "Url", "Study Link"];
+  let link = "";
 
-    for (const col of possibleLinkColumns) {
-      const raw = row[col];
-      if (raw && typeof raw === "object" && raw.url) {
-        link = raw.url;
-        break;
-      }
-      if (typeof raw === "string" && /^https?:\/\//i.test(raw)) {
-        link = raw;
-        break;
-      }
+  for (const col of possibleLinkColumns) {
+    const raw = row[col];
+
+    if (raw && typeof raw === "object" && raw.url) {
+      link = raw.url;
+      break;
     }
 
-    const studyHtml = link
-      ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(study)}</a>`
-      : escapeHtml(study);
-
-    return `
-      <div>
-        <strong>${escapeHtml(location)}</strong><br>
-        <strong>Dataset:</strong> ${escapeHtml(dataset.label)}<br>
-        <strong>Country:</strong> ${escapeHtml(country)}<br>
-        <strong>Study:</strong> ${studyHtml}<br>
-        <strong>Data type:</strong> ${escapeHtml(type)}<br>
-        <strong>Years:</strong> ${escapeHtml(start)}–${escapeHtml(finish)}
-      </div>
-    `;
+    const rawText = normalizeValue(raw);
+    if (/^https?:\/\//i.test(rawText)) {
+      link = rawText;
+      break;
+    }
   }
+
+  if (!link && row[mapCols.study] && typeof row[mapCols.study] === "object" && row[mapCols.study].url) {
+    link = row[mapCols.study].url;
+  }
+
+  const linkHtml = link
+    ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">Link</a>`
+    : "Not provided";
+
+  return `
+    <div>
+      <strong>${escapeHtml(location)}</strong><br>
+      <strong>Dataset:</strong> ${escapeHtml(dataset.label)}<br>
+      <strong>Country:</strong> ${escapeHtml(country)}<br>
+      <strong>Data type:</strong> ${escapeHtml(type)}<br>
+      <strong>Years:</strong> ${escapeHtml(start)}–${escapeHtml(finish)}<br>
+      <strong>Link:</strong> ${linkHtml}
+    </div>
+  `;
+}
 
 function initialiseMap() {
   map = L.map("map-frame", {
