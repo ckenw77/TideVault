@@ -460,7 +460,7 @@
 
 <header>
   <div class="nav">
-    <div class="brand">Tidal Time Capsules</div>
+    <div class="brand">TideVault</div>
     <nav>
       <a href="#about">About</a>
       <a href="#map">Map</a>
@@ -707,11 +707,11 @@
     <div class="card">
       <div class="citation-block">
         <p class="citation-label">If you use this site, please cite it as:</p>
-        <p class="citation-text">Kenwright, C., DATE, <em>Tidal Time Capsules: A Global Catalogue of Historical Tide Records</em>, available at: .................................</p>
+        <p class="citation-text">Kenwright, C., DATE, <em>TideVault: A Global Catalogue of Historical Tide Records</em>, available at: .................................</p>
       </div>
       <div class="citation-block">
         <p class="citation-label">Additionally, please cite the paper that details the work behind this site:</p>
-        <p class="citation-text">Kenwright, C., Haigh, I.D., Williams, J., Chan, D., Nicholls, R.J., McFarland, S. and Becker, M., DATE. <em>Tidal Time Capsules: A Global Catalogue of Historical Tide Records</em>. Journal, VOL, PAGE.</p>
+        <p class="citation-text">Kenwright, C., Haigh, I.D., Williams, J., Chan, D., Nicholls, R.J., McFarland, S. and Becker, M., DATE. <em>TideVault: A Global Catalogue of Historical Tide Records</em>. Journal, VOL, PAGE.</p>
       </div>
       <div class="citation-block">
         <p class="citation-text">If you use any of the data from these studies or the digitisation tools for your own investigations, please cite them accordingly.</p>
@@ -729,7 +729,7 @@
 </main>
 
 <footer>
-  © 2026 Tidal Time Capsules: A Global Catalogue of Historical Tide Records
+  © 2026 TideVault: A Global Catalogue of Historical Tide Records
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -1067,16 +1067,16 @@
       }
     }
 
-    const studyHtml = link
-      ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(study)}</a>`
-      : escapeHtml(study);
+const studyHtml = link
+  ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">Link</a>`
+  : "";
 
     return `
       <div>
         <strong>${escapeHtml(location)}</strong><br>
         <strong>Dataset:</strong> ${escapeHtml(dataset.label)}<br>
         <strong>Country:</strong> ${escapeHtml(country)}<br>
-        <strong>Link:</strong> ${studyHtml}<br>
+        ${studyHtml}<br>
         <strong>Data type:</strong> ${escapeHtml(type)}<br>
         <strong>Years:</strong> ${escapeHtml(start)}–${escapeHtml(finish)}
       </div>
