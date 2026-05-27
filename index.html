@@ -1041,48 +1041,48 @@
     return { headers, rows };
   }
 
-  function buildPopupContent(row, datasetKey) {
-    const dataset = datasets[datasetKey];
-    const mapCols = dataset.mapColumns;
-    const linkHtml = link
-      ? `, <a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">Link</a>`
-      : "";
-    const location = formatPopupValue(row[mapCols.location]);
-    const country = formatPopupValue(row[mapCols.country]);
-    const study = formatPopupValue(row[mapCols.study]);
-    const start = formatPopupValue(row[mapCols.start]);
-    const finish = formatPopupValue(row[mapCols.finish]);
-    const type = formatPopupValue(row[mapCols.type]);
+function buildPopupContent(row, datasetKey) {
+  const dataset = datasets[datasetKey];
+  const mapCols = dataset.mapColumns;
 
-    const possibleLinkColumns = ["Link", "link", "URL", "Url", "Study Link"];
-    let link = "";
+  const location = formatPopupValue(row[mapCols.location]);
+  const country = formatPopupValue(row[mapCols.country]);
+  const start = formatPopupValue(row[mapCols.start]);
+  const finish = formatPopupValue(row[mapCols.finish]);
+  const type = formatPopupValue(row[mapCols.type]);
 
-    for (const col of possibleLinkColumns) {
-      const raw = row[col];
-      if (raw && typeof raw === "object" && raw.url) {
-        link = raw.url;
-        break;
-      }
-      if (typeof raw === "string" && /^https?:\/\//i.test(raw)) {
-        link = raw;
-        break;
-      }
+  const possibleLinkColumns = ["Link", "link", "URL", "Url", "Study Link"];
+  let link = "";
+
+  for (const col of possibleLinkColumns) {
+    const raw = row[col];
+
+    if (raw && typeof raw === "object" && raw.url) {
+      link = raw.url;
+      break;
     }
 
-const studyHtml = link
-  ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">Link</a>`
-  : "";
-
-    return `
-      <div>
-        <strong>${escapeHtml(location)}</strong><br>
-        <strong>Dataset:</strong> ${escapeHtml(dataset.label)}<br>
-        <strong>Country:</strong> ${escapeHtml(country)}<br>
-        <strong>Years:</strong> ${escapeHtml(start)}–${escapeHtml(finish)}${linkHtml}
-      </div>
-    `;
+    const rawText = normalizeValue(raw);
+    if (/^https?:\/\//i.test(rawText)) {
+      link = rawText;
+      break;
+    }
   }
 
+  const linkHtml = link
+    ? `, <a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">Link</a>`
+    : "";
+
+  return `
+    <div>
+      <strong>${escapeHtml(location)}</strong><br>
+      <strong>Dataset:</strong> ${escapeHtml(dataset.label)}<br>
+      <strong>Country:</strong> ${escapeHtml(country)}<br>
+      <strong>Data type:</strong> ${escapeHtml(type)}<br>
+      <strong>Years:</strong> ${escapeHtml(start)}–${escapeHtml(finish)}${linkHtml}
+    </div>
+  `;
+}
 function initialiseMap() {
   map = L.map("map-frame", {
     worldCopyJump: true,
