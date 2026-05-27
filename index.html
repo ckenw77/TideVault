@@ -1044,7 +1044,9 @@
   function buildPopupContent(row, datasetKey) {
     const dataset = datasets[datasetKey];
     const mapCols = dataset.mapColumns;
-
+    const linkHtml = link
+      ? `, <a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">Link</a>`
+      : "";
     const location = formatPopupValue(row[mapCols.location]);
     const country = formatPopupValue(row[mapCols.country]);
     const study = formatPopupValue(row[mapCols.study]);
@@ -1076,9 +1078,7 @@ const studyHtml = link
         <strong>${escapeHtml(location)}</strong><br>
         <strong>Dataset:</strong> ${escapeHtml(dataset.label)}<br>
         <strong>Country:</strong> ${escapeHtml(country)}<br>
-        ${studyHtml}<br>
-        <strong>Data type:</strong> ${escapeHtml(type)}<br>
-        <strong>Years:</strong> ${escapeHtml(start)}–${escapeHtml(finish)}
+        <strong>Years:</strong> ${escapeHtml(start)}–${escapeHtml(finish)}${linkHtml}
       </div>
     `;
   }
