@@ -1411,10 +1411,13 @@ const isPriceColumn = datasetKey === "tools" &&
   (cleanedHeader.includes("price") || cleanedHeader.includes("cost"));
 
 const decimalColumns =
-  cleanedHeader.includes("latitude") ||
-  cleanedHeader.includes("longitude") ||
-  cleanedHeader.includes("recorded") ||
-  cleanedHeader.includes("missing");
+  cleanedHeader === "latitude" ||
+  cleanedHeader === "longitude" ||
+  cleanedHeader === "no. recorded yrs" ||
+  cleanedHeader === "no. missing yrs" ||
+  cleanedHeader === "no. recorded years" ||
+  cleanedHeader === "no. missing years" ||
+  cleanedHeader === "price (usd)";
 
 if (
   decimalColumns &&
