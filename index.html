@@ -1405,6 +1405,11 @@ let text = normalizeValue(value);
 const cleanedHeader = String(header).trim().toLowerCase();
 const numericValue = Number(String(text).replace(/,/g, "").trim());
 
+const isPlainNumber = /^-?\d+(\.\d+)?$/.test(text.trim());
+
+const isPriceColumn = datasetKey === "tools" &&
+  (cleanedHeader.includes("price") || cleanedHeader.includes("cost"));
+
 const decimalColumns =
   cleanedHeader.includes("latitude") ||
   cleanedHeader.includes("longitude") ||
@@ -1419,7 +1424,10 @@ if (
   text = numericValue.toFixed(2);
 }
 
-        if (isPriceColumn && isPlainNumber) text = Number(text).toFixed(2);
+if (isPriceColumn && isPlainNumber) {
+  text = Number(text).toFixed(2);
+}
+
 
         td.title = text;
 
